@@ -16,18 +16,25 @@ import java.io.IOException;
 @RestController
 @AllArgsConstructor
 @Slf4j
+@RequestMapping("/invoicePDF")
 public class IvoicePDFController {
 
     private final InvoicePDFService invoicePDFService;
 
     @PostMapping("/uploadFile")
-    public ResponseEntity<InvoicePDF> uploadFile(@RequestParam("file") MultipartFile file) throws IOException {
-       return ResponseEntity.ok(invoicePDFService.addInvoicePDF(file));
+    public ResponseEntity<?> uploadFile(@RequestParam("file") MultipartFile file,
+                                        @RequestParam String invoiceNumber,
+                                        @RequestParam String username) throws IOException {
+       invoicePDFService.addInvoicePDF(file,invoiceNumber,username);
+        return ResponseEntity.noContent().build();
     }
 
     @GetMapping("/downloadFile/{fileName:.+}")
-    public ResponseEntity<Resource> downloadFile(@PathVariable String fileName, HttpServletRequest request) {
-        InvoicePDF invoicePDF = invoicePDFService.getInvoicePDF(fileName);
+    public ResponseEntity<Resource> downloadFile(@PathVariable String fileName,
+                                                 @RequestParam String invoiceNumber,
+                                                 @RequestParam String username,
+                                                 HttpServletRequest request) {
+        InvoicePDF invoicePDF = invoicePDFService.getInvoicePDF(invoiceNumber,username);
 
         Resource resource = new ByteArrayResource(invoicePDF.getImage().getData());
         String contentType = null;

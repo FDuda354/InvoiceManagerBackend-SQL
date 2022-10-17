@@ -1,6 +1,9 @@
 package net.dudios.invoicemanagerbackend.invoicePDF;
 
 import lombok.AllArgsConstructor;
+import net.dudios.invoicemanagerbackend.invoice.Invoice;
+import net.dudios.invoicemanagerbackend.user.AppUser;
+import net.dudios.invoicemanagerbackend.user.UserRepository;
 import org.bson.BsonBinarySubType;
 import org.bson.types.Binary;
 import org.springframework.stereotype.Service;
@@ -11,19 +14,22 @@ import java.io.IOException;
 @Service
 @AllArgsConstructor
 public class InvoicePDFService {
-    private final InvoicePDFRepository invoicePDFRepository;
+    private final UserRepository userRepository;
 
-    public InvoicePDF addInvoicePDF(MultipartFile file) throws IOException {
+    public void addInvoicePDF(MultipartFile file,String invoiceNumber,String username) throws IOException {
 
         String title = file.getOriginalFilename();
         InvoicePDF invoicePDF = new InvoicePDF(title, new Binary(BsonBinarySubType.BINARY, file.getBytes()));
-        invoicePDF = invoicePDFRepository.save(invoicePDF);
 
-        return invoicePDF;
+        AppUser user = userRepository.findByUsername(username);
+        user.getInvoices().stream().filter(i ->
+                i.getInvoiceNumber().equals(invoiceNumber)).findFirst().get().setInvoicePDF(invoicePDF);
+        userRepository.save(user);
     }
 
-    public InvoicePDF getInvoicePDF(String title) {
-        InvoicePDF invoicePDF = invoicePDFRepository.findByTitle(title);
+    public InvoicePDF getInvoicePDF(String invoiceNumber, String username) {
+        InvoicePDF invoicePDF = userRepository.findByUsername(username).getInvoices().stream().filter(invoice ->
+                invoice.getInvoiceNumber().equals(invoiceNumber)).findFirst().get().getInvoicePDF();
         System.out.println(invoicePDF.getImage());
 
         return invoicePDF;

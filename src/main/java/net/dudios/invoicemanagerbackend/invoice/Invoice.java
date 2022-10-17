@@ -4,16 +4,15 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import net.dudios.invoicemanagerbackend.invoicePDF.InvoicePDF;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
-import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.math.BigDecimal;
 
-@Document(collection = "invoices")
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 @Builder
 public class Invoice {
 
@@ -28,9 +27,12 @@ public class Invoice {
     private String invoiceNumber;
     private String invoiceDate;
 
+    private InvoicePDF invoicePDF;
+
     private String invoiceDescription;
     private BigDecimal priceNetto;
     private BigDecimal priceBrutto;
 
     private boolean paid;
+
 }

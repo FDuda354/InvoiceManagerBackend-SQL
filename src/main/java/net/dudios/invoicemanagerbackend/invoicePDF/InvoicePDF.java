@@ -15,9 +15,7 @@ public class InvoicePDF {
 
     @Id
     private String id;
-
     private String title;
-
     private Binary image;
 
     public InvoicePDF(String title, Binary image) {
