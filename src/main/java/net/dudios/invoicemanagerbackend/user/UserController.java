@@ -22,13 +22,15 @@ public class UserController {
         return ResponseEntity.ok(users);
     }
 
+    @GetMapping
+    public ResponseEntity<AppUser> getUser(Long userId) {
+        return ResponseEntity.ok(userService.getUser(userId));
+    }
+
     @PostMapping
     public ResponseEntity<AppUser> addUser(AppUser user) {
         return ResponseEntity.ok(userService.addUser(user));
     }
 
-    @GetMapping
-    public ResponseEntity<AppUser> getUser(String username) {
-        return ResponseEntity.ok(userService.getUser(username));
-    }
+
 }

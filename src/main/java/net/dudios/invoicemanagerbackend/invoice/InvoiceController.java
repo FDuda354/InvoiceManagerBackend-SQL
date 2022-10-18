@@ -25,12 +25,17 @@ public class InvoiceController {
     private final InvoiceService invoiceService;
 
     @GetMapping("/all")
-    public ResponseEntity<Set<Invoice>> getAllInvoices(Long userId) {
+    public ResponseEntity<Set<Invoice>> getAllInvoices(@RequestParam Long userId) {
         return ResponseEntity.ok(invoiceService.getAllInvoices(userId));
     }
 
+    @GetMapping
+    public ResponseEntity<Invoice> getInvoice(@RequestParam Long invoiceId) {
+        return ResponseEntity.ok(invoiceService.getInvoice(invoiceId));
+    }
+
     @PostMapping
-    public ResponseEntity<Payload> addInvoice(@RequestBody Payload payload) throws IOException {
+    public ResponseEntity<Payload> addInvoice(@RequestBody Payload payload) {
         URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("/invoice").toUriString());
         return ResponseEntity.created(uri).body(invoiceService.addInvoice(payload));
     }

@@ -17,15 +17,17 @@ import static javax.persistence.GenerationType.AUTO;
 @AllArgsConstructor
 @Builder
 @Entity
+@Table(name="INVOICES")
 public class Invoice {
 
     @Id
     @GeneratedValue(strategy = AUTO)
     private Long id;
 
-    @JsonIgnore
+    //TODO: fix (json ignore doesn't work)
     @ManyToOne
     @JoinColumn(name = "user_id")
+    @JsonIgnore
     private AppUser appUser;
 
     private String companyName;
@@ -37,6 +39,7 @@ public class Invoice {
 
     private String invoiceDescription;
     private String title;
+
     private BigDecimal priceNetto;
     private BigDecimal priceBrutto;
 

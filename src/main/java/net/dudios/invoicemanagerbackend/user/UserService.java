@@ -14,8 +14,8 @@ public class UserService {
         return userRepository.save(user);
     }
 
-    public AppUser getUser(String username) {
-        return userRepository.findByUsername(username);
+    public AppUser getUser(Long userId) {
+        return userRepository.findById(userId).orElseThrow(() -> new RuntimeException("invoice not found"));
     }
 
 

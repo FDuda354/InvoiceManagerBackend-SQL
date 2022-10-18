@@ -18,7 +18,9 @@ public class InvoiceService {
 
     public Set<Invoice> getAllInvoices(Long userId) {
         AppUser user = userRepository.findById(userId).get();
+        System.out.println(user.getInvoices());
         return user.getInvoices();
+
     }
 
    public Payload addInvoice(Payload payload) {
@@ -41,10 +43,13 @@ public class InvoiceService {
 
 
     public Invoice getInvoicePDF(Long invoiceId) {
-        Invoice invoice = invoiceRepository.findById(invoiceId).get();
+        Invoice invoice = invoiceRepository.findById(invoiceId).orElseThrow(() -> new RuntimeException("invoice not found"));
 
         return invoice;
     }
 
 
+    public Invoice getInvoice(Long invoiceId) {
+        return invoiceRepository.findById(invoiceId).orElseThrow(() -> new RuntimeException("invoice not found"));
+    }
 }

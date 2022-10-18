@@ -7,8 +7,6 @@ import lombok.NoArgsConstructor;
 import net.dudios.invoicemanagerbackend.invoice.Invoice;
 
 import javax.persistence.*;
-import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 import static javax.persistence.GenerationType.AUTO;
