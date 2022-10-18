@@ -4,25 +4,47 @@ import lombok.AllArgsConstructor;
 import net.dudios.invoicemanagerbackend.user.AppUser;
 import net.dudios.invoicemanagerbackend.user.UserRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
-import java.util.List;
+import java.io.IOException;
+import java.util.Set;
 
 @Service
 @AllArgsConstructor
 public class InvoiceService {
 
     private final UserRepository userRepository;
-    public List<Invoice> getAllInvoices(String username) {
-        return userRepository.findByUsername(username).getInvoices();
+    private final InvoiceRepository invoiceRepository;
+
+    public Set<Invoice> getAllInvoices(Long userId) {
+        AppUser user = userRepository.findById(userId).get();
+        return user.getInvoices();
     }
 
-    Payload addInvoice(Payload payload) {
-        AppUser user = userRepository.findByUsername(payload.username());
-        Invoice invoice = payload.invoice();
-        invoice.setInvoicePDF(payload.invoicePDF());
+   public Payload addInvoice(Payload payload) {
 
-        user.getInvoices().add(invoice);
+        AppUser user = userRepository.findById(payload.userId()).orElseThrow(() -> new RuntimeException("User not found"));
+        Invoice invoice = payload.invoice();
+       invoice.setAppUser(user);
+       invoiceRepository.save(invoice);
         return payload;
     }
+
+    public void addInvoicePDF(MultipartFile file,Long invoiceId) throws IOException {
+
+        Invoice invoice = invoiceRepository.findById(invoiceId).orElseThrow(() -> new RuntimeException("invoice not found"));
+        invoice.setTitle(file.getOriginalFilename());
+        invoice.setData(file.getBytes());
+        invoiceRepository.save(invoice);
+
+    }
+
+
+    public Invoice getInvoicePDF(Long invoiceId) {
+        Invoice invoice = invoiceRepository.findById(invoiceId).get();
+
+        return invoice;
+    }
+
 
 }

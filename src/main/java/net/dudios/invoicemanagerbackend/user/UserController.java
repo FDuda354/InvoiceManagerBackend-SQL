@@ -7,12 +7,20 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 @RestController
 @AllArgsConstructor
-@RequestMapping("users")
+@RequestMapping("/users")
 public class UserController {
 
     private final UserService userService;
+
+    @GetMapping("/all")
+    public ResponseEntity<List<AppUser>> getAllUsers() {
+        List<AppUser> users = userService.getAllUsers();
+        return ResponseEntity.ok(users);
+    }
 
     @PostMapping
     public ResponseEntity<AppUser> addUser(AppUser user) {

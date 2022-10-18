@@ -1,8 +1,10 @@
 package net.dudios.invoicemanagerbackend.user;
 
-import org.springframework.data.mongodb.repository.MongoRepository;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
-public interface UserRepository extends MongoRepository<AppUser, String> {
+@Repository
+public interface UserRepository extends JpaRepository<AppUser, Long> {
         AppUser findByUsername(String username);
         AppUser findByEmail(String email);
 }

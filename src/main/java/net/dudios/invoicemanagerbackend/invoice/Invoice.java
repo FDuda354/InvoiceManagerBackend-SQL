@@ -1,37 +1,47 @@
 package net.dudios.invoicemanagerbackend.invoice;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import net.dudios.invoicemanagerbackend.invoicePDF.InvoicePDF;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.index.Indexed;
+import net.dudios.invoicemanagerbackend.user.AppUser;
 
+import javax.persistence.*;
 import java.math.BigDecimal;
+
+import static javax.persistence.GenerationType.AUTO;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@Entity
 public class Invoice {
 
     @Id
-    private String id;
+    @GeneratedValue(strategy = AUTO)
+    private Long id;
+
+    @JsonIgnore
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private AppUser appUser;
 
     private String companyName;
     private String companyAddress;
     private String companyNIP;
 
-    @Indexed(unique = true)
     private String invoiceNumber;
     private String invoiceDate;
 
-    private InvoicePDF invoicePDF;
-
     private String invoiceDescription;
+    private String title;
     private BigDecimal priceNetto;
     private BigDecimal priceBrutto;
+
+    @Lob
+    private byte[] data;
 
     private boolean paid;
 
