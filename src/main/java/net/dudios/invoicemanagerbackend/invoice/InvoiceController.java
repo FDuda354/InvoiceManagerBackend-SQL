@@ -46,6 +46,12 @@ public class InvoiceController {
         return ResponseEntity.noContent().build();
     }
 
+    @DeleteMapping
+    public ResponseEntity<?> deleteInvoice(@RequestParam Long invoiceId) {
+        invoiceService.deleteInvoice(invoiceId);
+        return ResponseEntity.noContent().build();
+    }
+
 
     @GetMapping("/PDF/{fileName:.+}")
     public ResponseEntity<Resource> downloadFile(@RequestParam Long invoiceId, HttpServletRequest request) {

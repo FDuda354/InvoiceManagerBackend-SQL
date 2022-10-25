@@ -1,7 +1,7 @@
 package net.dudios.invoicemanagerbackend.user;
 
-public enum Roles {
+public enum Role {
 
-    ROLE_ADMIN, ROLE_USER;
+    ADMIN, USER;
 
 }

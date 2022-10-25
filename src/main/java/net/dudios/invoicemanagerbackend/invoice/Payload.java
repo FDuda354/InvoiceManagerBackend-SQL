@@ -1,7 +1,5 @@
 package net.dudios.invoicemanagerbackend.invoice;
 
-import lombok.Builder;
-
 import java.time.LocalDate;
 
 public record Payload(

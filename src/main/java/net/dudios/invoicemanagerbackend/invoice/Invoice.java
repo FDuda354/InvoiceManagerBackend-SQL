@@ -43,9 +43,9 @@ public class Invoice {
     private BigDecimal priceNetto;
     private BigDecimal priceBrutto;
 
+    private boolean paid;
+
     @Lob
     private byte[] data;
-
-    private boolean paid;
 
 }

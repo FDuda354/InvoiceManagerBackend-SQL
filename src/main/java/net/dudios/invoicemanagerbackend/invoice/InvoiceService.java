@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.HashSet;
 import java.util.Set;
 
 @Service
@@ -18,8 +19,14 @@ public class InvoiceService {
 
     public Set<Invoice> getAllInvoices(Long userId) {
         AppUser user = userRepository.findById(userId).get();
-        System.out.println(user.getInvoices());
-        return user.getInvoices();
+        Set<Invoice> invoices = user.getInvoices();
+//       for ( Invoice invoice : invoices) {
+//           invoice.setData(null);
+//           invoice.setAppUser(null);
+//           System.out.println("ELLOOOOOOOO");
+//         }
+        System.out.println("ELLOOOOOOOO");
+        return  invoices;
 
     }
 
@@ -30,6 +37,14 @@ public class InvoiceService {
        invoice.setAppUser(user);
        invoiceRepository.save(invoice);
         return payload;
+    }
+
+    public Invoice getInvoice(Long invoiceId) {
+       return invoiceRepository.findById(invoiceId).orElseThrow(() -> new RuntimeException("invoice not found"));
+    }
+
+    public void deleteInvoice(Long invoiceId) {
+        invoiceRepository.deleteById(invoiceId);
     }
 
     public void addInvoicePDF(MultipartFile file,Long invoiceId) throws IOException {
@@ -49,7 +64,5 @@ public class InvoiceService {
     }
 
 
-    public Invoice getInvoice(Long invoiceId) {
-        return invoiceRepository.findById(invoiceId).orElseThrow(() -> new RuntimeException("invoice not found"));
-    }
+
 }

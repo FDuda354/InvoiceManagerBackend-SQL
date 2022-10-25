@@ -5,7 +5,6 @@ import net.dudios.invoicemanagerbackend.invoice.Invoice;
 import net.dudios.invoicemanagerbackend.invoice.InvoiceService;
 import net.dudios.invoicemanagerbackend.invoice.Payload;
 import net.dudios.invoicemanagerbackend.user.AppUser;
-import net.dudios.invoicemanagerbackend.user.Roles;
 import net.dudios.invoicemanagerbackend.user.UserService;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.event.EventListener;
@@ -22,14 +21,14 @@ public class DBInit {
     private final InvoiceService invoiceService;
 
 
-   @EventListener(ApplicationReadyEvent.class)
+    @EventListener(ApplicationReadyEvent.class)
     public void fillDB() {
         AppUser user1 = AppUser.builder()
                 .username("filip")
                 .password("filip1234")
                 .email("filip@wp.pl")
                 .invoices(new HashSet<>())
-                .roles(Roles.ROLE_ADMIN)
+                .roles("ROLE_ADMIN")
                 .build();
 
         AppUser user2 = AppUser.builder()
@@ -37,7 +36,7 @@ public class DBInit {
                 .password("kamil1234")
                 .email("kamil@wp.pl")
                 .invoices(new HashSet<>())
-                .roles(Roles.ROLE_USER)
+                .roles("ROLE_USER")
                 .build();
 
 
@@ -51,15 +50,13 @@ public class DBInit {
                 .invoiceDescription("car services").priceNetto(BigDecimal.valueOf(2520))
                 .priceBrutto(BigDecimal.valueOf(3100)).paid(false).build();
 
-       userService.addUser(user1);
-       userService.addUser(user2);
+        userService.addUser(user1);
+        userService.addUser(user2);
 
-       Payload payload1 = new Payload(invoice1,user1.getId());
-       Payload payload2 = new Payload(invoice2,user1.getId());
+        Payload payload1 = new Payload(invoice1,user1.getId());
+        Payload payload2 = new Payload(invoice2,user1.getId());
 
-       invoiceService.addInvoice(payload1);
-       invoiceService.addInvoice(payload2);
-
-
+        invoiceService.addInvoice(payload1);
+        invoiceService.addInvoice(payload2);
     }
 }
