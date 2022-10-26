@@ -43,7 +43,7 @@ public class AppUserControllerTests {
     public void shouldAddUser() throws Exception {
         //Given
         var user = AppUser.builder().id(1L).username("filip")
-                .password("1234").email("filipduda99@wp.pl").roles(Role.ROLE_ADMIN).build();
+                .password("1234").email("filipduda99@wp.pl").roles(Role.ADMIN.name()).build();
         given(appUserService.addUser(any(AppUser.class))).willReturn(user);
 
         //When
@@ -69,11 +69,11 @@ public class AppUserControllerTests {
     public void shouldGetAllUsers() throws Exception {
         //Given
         var userList = List.of(AppUser.builder().id(1L).username("filip")
-                        .password("1234").email("filipduda99@wp.pl").roles(Role.ROLE_ADMIN).build(),
+                        .password("1234").email("filipduda99@wp.pl").roles(Role.ADMIN.name()).build(),
                 AppUser.builder().id(2L).username("jan")
-                        .password("1234").email("janKowalski@wp.pl").roles(Role.ROLE_ADMIN).build(),
+                        .password("1234").email("janKowalski@wp.pl").roles(Role.ADMIN.name()).build(),
                 AppUser.builder().id(3L).username("kasia")
-                        .password("1234").email("kasia12@wp.pl").roles(Role.ROLE_USER).build());
+                        .password("1234").email("kasia12@wp.pl").roles(Role.ADMIN.name()).build());
 
         given(appUserService.getAllUsers()).willReturn(userList);
 
@@ -99,7 +99,7 @@ public class AppUserControllerTests {
     public void shouldDeleteUser() throws Exception {
         //Given
         var user = AppUser.builder().id(1L).username("filip")
-                .password("1234").email("filipduda99@wp.pl").roles(Role.ROLE_ADMIN).build();
+                .password("1234").email("filipduda99@wp.pl").roles(Role.ADMIN.name()).build();
 
         //When
         var result = mockMvc.perform(MockMvcRequestBuilders.delete("/users")
@@ -119,7 +119,7 @@ public class AppUserControllerTests {
     public void shouldGetUserById() throws Exception {
         //Given
         var user = AppUser.builder().id(1L).username("filip")
-                .password("1234").email("filipduda99@wp.pl").roles(Role.ROLE_ADMIN).build();
+                .password("1234").email("filipduda99@wp.pl").roles(Role.ADMIN.name()).build();
         given(appUserService.getUser(any(Long.class))).willReturn(user);
 
         //When

@@ -4,7 +4,6 @@ import java.time.LocalDate;
 
 public record Payload(
         Invoice invoice,
-
         String date,
         Long userId) {
     public Payload(Invoice invoice,  Long userId) {

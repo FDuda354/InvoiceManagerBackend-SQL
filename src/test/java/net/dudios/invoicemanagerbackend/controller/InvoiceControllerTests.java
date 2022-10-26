@@ -46,7 +46,7 @@ public class InvoiceControllerTests {
     public void shouldAddInvoice() throws Exception {
         //Given
         var user = AppUser.builder().id(10L).username("filip")
-                .password("1234").email("filipduda99@wp.pl").roles(Role.ROLE_ADMIN).build();
+                .password("1234").email("filipduda99@wp.pl").roles(Role.ADMIN.name()).build();
         var invoice = Invoice.builder().id(1L).invoiceDate("2011-01-01").invoiceNumber("1")
                         .companyName("comqdsafdsapany").companyAddress("address").companyNIP("112414567890")
                         .invoiceDescription("descripdsaation").title("title").priceNetto(BigDecimal.valueOf(3022))
@@ -83,7 +83,7 @@ public class InvoiceControllerTests {
     public void shouldGetAllInvoices() throws Exception {
         //Given
         var user = AppUser.builder().id(10L).username("filip")
-                .password("1234").email("filipduda99@wp.pl").roles(Role.ROLE_ADMIN).build();
+                .password("1234").email("filipduda99@wp.pl").roles(Role.ADMIN.name()).build();
 
         var invoiceList = List.of(
                         Invoice.builder().id(1L).invoiceDate("2011-01-01").invoiceNumber("1")
@@ -128,7 +128,7 @@ public class InvoiceControllerTests {
     public void shouldDeleteInvoice() throws Exception {
         //Given
         var user = AppUser.builder().id(1L).username("filip")
-                .password("1234").email("filipduda99@wp.pl").roles(Role.ROLE_ADMIN).build();
+                .password("1234").email("filipduda99@wp.pl").roles(Role.ADMIN.name()).build();
         var invoice = Invoice.builder().id(2L).invoiceDate("2011-01-01").invoiceNumber("1")
                 .companyName("comqdsafdsapany").companyAddress("address").companyNIP("112414567890")
                 .invoiceDescription("descripdsaation").title("title").priceNetto(BigDecimal.valueOf(3022))
@@ -152,7 +152,7 @@ public class InvoiceControllerTests {
     public void shouldGetInvoiceById() throws Exception {
         //Given
         var user = AppUser.builder().id(1L).username("filip")
-                .password("1234").email("filipduda99@wp.pl").roles(Role.ROLE_ADMIN).build();
+                .password("1234").email("filipduda99@wp.pl").roles(Role.ADMIN.name()).build();
         var invoice = Invoice.builder().id(2L).invoiceDate("2011-01-01").invoiceNumber("1")
                 .companyName("comqdsafdsapany").companyAddress("address").companyNIP("112414567890")
                 .invoiceDescription("descripdsaation").title("title").priceNetto(BigDecimal.valueOf(3022))

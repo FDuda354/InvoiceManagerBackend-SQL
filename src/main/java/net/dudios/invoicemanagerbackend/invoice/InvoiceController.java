@@ -14,7 +14,6 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.net.URI;
-import java.util.Set;
 
 @RestController
 @AllArgsConstructor
@@ -25,7 +24,7 @@ public class InvoiceController {
     private final InvoiceService invoiceService;
 
     @GetMapping("/all")
-    public ResponseEntity<Set<Invoice>> getAllInvoices(@RequestParam Long userId) {
+    public ResponseEntity<Iterable<Invoice>> getAllInvoices(@RequestParam Long userId) {
         return ResponseEntity.ok(invoiceService.getAllInvoices(userId));
     }
 
@@ -51,7 +50,6 @@ public class InvoiceController {
         invoiceService.deleteInvoice(invoiceId);
         return ResponseEntity.noContent().build();
     }
-
 
     @GetMapping("/PDF/{fileName:.+}")
     public ResponseEntity<Resource> downloadFile(@RequestParam Long invoiceId, HttpServletRequest request) {

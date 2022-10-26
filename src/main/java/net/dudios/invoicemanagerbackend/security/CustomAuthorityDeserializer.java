@@ -14,7 +14,6 @@ import java.util.LinkedList;
 import java.util.List;
 public class CustomAuthorityDeserializer extends JsonDeserializer {
 
-
     @Override
     public Object deserialize(JsonParser jp, DeserializationContext ctxt) throws IOException {
         ObjectMapper mapper = (ObjectMapper) jp.getCodec();

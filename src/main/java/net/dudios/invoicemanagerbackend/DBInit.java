@@ -11,6 +11,7 @@ import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.HashSet;
 
 @Component
@@ -27,7 +28,7 @@ public class DBInit {
                 .username("filip")
                 .password("filip1234")
                 .email("filip@wp.pl")
-                .invoices(new HashSet<>())
+                .invoices(new ArrayList<>())
                 .roles("ROLE_ADMIN")
                 .build();
 
@@ -35,7 +36,7 @@ public class DBInit {
                 .username("kamil")
                 .password("kamil1234")
                 .email("kamil@wp.pl")
-                .invoices(new HashSet<>())
+                .invoices(new ArrayList<>())
                 .roles("ROLE_USER")
                 .build();
 

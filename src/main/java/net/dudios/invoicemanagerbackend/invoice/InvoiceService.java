@@ -7,8 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.List;
 
 @Service
 @AllArgsConstructor
@@ -17,25 +16,16 @@ public class InvoiceService {
     private final UserRepository userRepository;
     private final InvoiceRepository invoiceRepository;
 
-    public Set<Invoice> getAllInvoices(Long userId) {
-        AppUser user = userRepository.findById(userId).get();
-        Set<Invoice> invoices = user.getInvoices();
-//       for ( Invoice invoice : invoices) {
-//           invoice.setData(null);
-//           invoice.setAppUser(null);
-//           System.out.println("ELLOOOOOOOO");
-//         }
-        System.out.println("ELLOOOOOOOO");
-        return  invoices;
-
+    public Iterable<Invoice> getAllInvoices(Long userId) {
+        AppUser user = userRepository.findById(userId).orElseThrow(() -> new RuntimeException("User not found"));
+        return user.getInvoices();
     }
 
    public Payload addInvoice(Payload payload) {
-
         AppUser user = userRepository.findById(payload.userId()).orElseThrow(() -> new RuntimeException("User not found"));
         Invoice invoice = payload.invoice();
-       invoice.setAppUser(user);
-       invoiceRepository.save(invoice);
+        invoice.setAppUser(user);
+        invoiceRepository.save(invoice);
         return payload;
     }
 
@@ -53,16 +43,11 @@ public class InvoiceService {
         invoice.setTitle(file.getOriginalFilename());
         invoice.setData(file.getBytes());
         invoiceRepository.save(invoice);
-
     }
-
 
     public Invoice getInvoicePDF(Long invoiceId) {
         Invoice invoice = invoiceRepository.findById(invoiceId).orElseThrow(() -> new RuntimeException("invoice not found"));
 
         return invoice;
     }
-
-
-
 }

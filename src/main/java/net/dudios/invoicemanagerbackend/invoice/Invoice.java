@@ -23,8 +23,6 @@ public class Invoice {
     @Id
     @GeneratedValue(strategy = AUTO)
     private Long id;
-
-    //TODO: fix (json ignore doesn't work)
     @ManyToOne
     @JoinColumn(name = "user_id")
     @JsonIgnore

@@ -15,6 +15,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import javax.persistence.*;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.List;
 import java.util.Set;
 
 import static javax.persistence.GenerationType.AUTO;
@@ -41,7 +42,7 @@ public class AppUser implements UserDetails {
 
 
     @OneToMany(mappedBy = "appUser")
-    private Set<Invoice> invoices;
+    private List<Invoice> invoices;
 
     @JsonDeserialize(using = CustomAuthorityDeserializer.class)
     @Override
@@ -67,5 +68,10 @@ public class AppUser implements UserDetails {
     public boolean isEnabled() {
         return true;
     }
+
+//    public Invoice getInvoices() {
+//        Invoice invoice = invoices.stream().findFirst().orElse(null);
+//        return invoice;
+//    }
 }
 

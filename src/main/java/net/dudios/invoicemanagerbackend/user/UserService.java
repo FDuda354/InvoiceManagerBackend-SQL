@@ -15,6 +15,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -55,7 +56,7 @@ public class UserService {
 
     private AppUser userBuilder(AppUser appUser) {
         appUser.setRoles("ROLE_"+Role.USER.name());
-        appUser.setInvoices(new HashSet<>());
+        appUser.setInvoices(new ArrayList<>());
         appUser.setPassword(passwordEncoder.encode(appUser.getPassword()));
         return appUser;
     }
