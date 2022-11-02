@@ -69,9 +69,5 @@ public class AppUser implements UserDetails {
         return true;
     }
 
-//    public Invoice getInvoices() {
-//        Invoice invoice = invoices.stream().findFirst().orElse(null);
-//        return invoice;
-//    }
 }
 

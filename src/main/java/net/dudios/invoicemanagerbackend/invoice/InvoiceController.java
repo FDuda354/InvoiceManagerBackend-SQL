@@ -51,7 +51,7 @@ public class InvoiceController {
         return ResponseEntity.noContent().build();
     }
 
-    @GetMapping("/PDF/{fileName:.+}")
+    @GetMapping("/PDF")
     public ResponseEntity<Resource> downloadFile(@RequestParam Long invoiceId, HttpServletRequest request) {
 
         Invoice invoice = invoiceService.getInvoicePDF(invoiceId);

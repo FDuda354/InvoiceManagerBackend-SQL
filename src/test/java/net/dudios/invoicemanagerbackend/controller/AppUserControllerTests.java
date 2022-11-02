@@ -1,6 +1,7 @@
 package net.dudios.invoicemanagerbackend.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import net.dudios.invoicemanagerbackend.security.SecurityConfig;
 import net.dudios.invoicemanagerbackend.user.AppUser;
 import net.dudios.invoicemanagerbackend.user.Role;
 import net.dudios.invoicemanagerbackend.user.UserController;
@@ -9,8 +10,10 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
@@ -21,6 +24,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(UserController.class)
@@ -32,11 +36,18 @@ public class AppUserControllerTests {
     @MockBean
     private UserService appUserService;
 
+    @MockBean
+    private BCryptPasswordEncoder bCryptPasswordEncoder;
+
+    @MockBean
+    private SecurityConfig securityConfig;
+
 
     @Autowired
     public AppUserControllerTests(MockMvc mockMvc, ObjectMapper mapper) {
         this.mockMvc = mockMvc;
         this.mapper = mapper;
+
     }
 
     @Test
@@ -48,6 +59,7 @@ public class AppUserControllerTests {
 
         //When
         var result = mapper.readValue(mockMvc.perform(MockMvcRequestBuilders.post("/users")
+                                .header(HttpHeaders.AUTHORIZATION, "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZHJpYW4iLCJyb2xlcyI6WyJST0xFX1VTRVIiXSwiaXNzIjoiQWRtaW4ifQ.50HBc1ZORtEVIblAmLYAJ0HzF63M0wu_h0vMnjn6J0U")
                         .content(mapper.writeValueAsString(user))
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
@@ -62,6 +74,7 @@ public class AppUserControllerTests {
         assertEquals(user.getPassword(), result.getPassword());
         assertEquals(user.getEmail(), result.getEmail());
         assertEquals(user.getRoles(), result.getRoles());
+        //eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZHJpYW4iLCJyb2xlcyI6WyJST0xFX1VTRVIiXSwiaXNzIjoiQWRtaW4ifQ.50HBc1ZORtEVIblAmLYAJ0HzF63M0wu_h0vMnjn6J0U
 
     }
 

@@ -100,7 +100,7 @@ public class InvoiceControllerTests {
                         .priceBrutto(BigDecimal.valueOf(302)).paid(false).build());
 
 
-        user.setInvoices(Set.of(invoiceList.get(0), invoiceList.get(1), invoiceList.get(2)));
+        user.setInvoices(List.of(invoiceList.get(0), invoiceList.get(1), invoiceList.get(2)));
 
         given(invoiceService.getAllInvoices(10L)).willReturn(Set.of(invoiceList.get(0), invoiceList.get(1), invoiceList.get(2)));
 
