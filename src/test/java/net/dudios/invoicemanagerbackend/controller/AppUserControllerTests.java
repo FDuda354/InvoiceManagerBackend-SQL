@@ -8,12 +8,16 @@ import net.dudios.invoicemanagerbackend.user.UserController;
 import net.dudios.invoicemanagerbackend.user.UserService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
@@ -27,7 +31,9 @@ import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@WebMvcTest(UserController.class)
+@SpringBootTest
+@AutoConfigureMockMvc
+@WithMockUser
 public class AppUserControllerTests {
 
     private final MockMvc mockMvc;
@@ -36,11 +42,17 @@ public class AppUserControllerTests {
     @MockBean
     private UserService appUserService;
 
+
     @MockBean
     private BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @MockBean
     private SecurityConfig securityConfig;
+
+    @MockBean
+    private SecurityFilterChain securityFilterChain;
+
+
 
 
     @Autowired
@@ -55,11 +67,11 @@ public class AppUserControllerTests {
         //Given
         var user = AppUser.builder().id(1L).username("filip")
                 .password("1234").email("filipduda99@wp.pl").roles(Role.ADMIN.name()).build();
+        user.setId(1L);
         given(appUserService.addUser(any(AppUser.class))).willReturn(user);
 
         //When
-        var result = mapper.readValue(mockMvc.perform(MockMvcRequestBuilders.post("/users")
-                                .header(HttpHeaders.AUTHORIZATION, "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZHJpYW4iLCJyb2xlcyI6WyJST0xFX1VTRVIiXSwiaXNzIjoiQWRtaW4ifQ.50HBc1ZORtEVIblAmLYAJ0HzF63M0wu_h0vMnjn6J0U")
+        var result = mapper.readValue(mockMvc.perform(MockMvcRequestBuilders.post("/users/register")
                         .content(mapper.writeValueAsString(user))
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
@@ -74,7 +86,6 @@ public class AppUserControllerTests {
         assertEquals(user.getPassword(), result.getPassword());
         assertEquals(user.getEmail(), result.getEmail());
         assertEquals(user.getRoles(), result.getRoles());
-        //eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZHJpYW4iLCJyb2xlcyI6WyJST0xFX1VTRVIiXSwiaXNzIjoiQWRtaW4ifQ.50HBc1ZORtEVIblAmLYAJ0HzF63M0wu_h0vMnjn6J0U
 
     }
 
@@ -110,9 +121,8 @@ public class AppUserControllerTests {
 
     @Test
     public void shouldDeleteUser() throws Exception {
-        //Given
-        var user = AppUser.builder().id(1L).username("filip")
-                .password("1234").email("filipduda99@wp.pl").roles(Role.ADMIN.name()).build();
+
+
 
         //When
         var result = mockMvc.perform(MockMvcRequestBuilders.delete("/users")

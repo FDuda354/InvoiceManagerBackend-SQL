@@ -26,7 +26,7 @@ public class UserController {
     @PostMapping("/register")
     public ResponseEntity<AppUser> addUser(@RequestBody AppUser appUser){
         URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("/users").toUriString());
-        return ResponseEntity.created(uri).body(this.userService.addUser(appUser));
+        return ResponseEntity.created(uri).body(userService.addUser(appUser));
     }
 
     @PostMapping("/login")

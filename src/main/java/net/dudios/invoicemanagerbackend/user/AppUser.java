@@ -1,10 +1,7 @@
 package net.dudios.invoicemanagerbackend.user;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import net.dudios.invoicemanagerbackend.invoice.Invoice;
 import net.dudios.invoicemanagerbackend.security.CustomAuthorityDeserializer;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -25,9 +22,9 @@ import static javax.persistence.GenerationType.AUTO;
 @AllArgsConstructor
 @Builder
 @Entity
-@EntityListeners(AuditingEntityListener.class)
 @Table(name="USERS")
 public class AppUser implements UserDetails {
+
     @Id
     @GeneratedValue(strategy = AUTO)
     private Long id;
@@ -43,6 +40,14 @@ public class AppUser implements UserDetails {
 
     @OneToMany(mappedBy = "appUser")
     private List<Invoice> invoices;
+
+    public AppUser(Long l, String filip, String s, String s1, String name) {
+        this.id = l;
+        this.username = filip;
+        this.password = s;
+        this.email = s1;
+        this.roles = name;
+    }
 
     @JsonDeserialize(using = CustomAuthorityDeserializer.class)
     @Override
